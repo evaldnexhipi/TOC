@@ -48,12 +48,40 @@ public class TOC {
 		return DFASet;
 	}
 	
+	public static ArrayList <NFAState> convertToNFA (ArrayList <eNFAState> eNFA, ArrayList <Character> Alphabet){
+		ArrayList <NFAState> NFA = new ArrayList <NFAState>();
+		//percaktohen gjendjet finale
+		//ne momentin kur krijohet nje gjendje e re NFAState, nqs eClosure i saj shkon tek gjendja finale, athr Type.FINAL
+		HashSet <eNFAState> eNFAFinalStates = new HashSet<eNFAState>();
+		for (eNFAState enfa : eNFA) {
+			if (enfa.getType()==Type.FINAL) {
+				eNFAFinalStates.add(enfa);
+			}
+		}
+		
+		for (eNFAState enfa : eNFA) {
+			Type t = enfa.getType();
+			for (eNFAState finals : eNFAFinalStates) {
+				if (enfa.eClosure().contains(finals)) {
+					t=Type.FINAL;
+				}
+			}
+			NFAState nfaState = new NFAState(enfa.getTitle(),t);
+			NFA.add(nfaState);
+		}
+		//U ndertuan gjendjet finale te NFA-se tani te filloje algoritmi per konvertimin
+		
+		
+		return NFA;
+	}
+	
 	public static void main (String [] args) {
 		//new ConversionFrame();
 		ArrayList <Character> alpha = new ArrayList<Character>();
 		alpha.add('0');
 		alpha.add('1');
 		alpha.add('2');
+
 		/*
 		ArrayList <NFAState> NFA = new ArrayList<NFAState>();
 		NFAState q0 = new NFAState("q0", Type.START);
