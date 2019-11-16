@@ -2,86 +2,94 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
-public class eNFAState {
-	private String title;
-	private Type type;
-	private ArrayList <Character> symbols = new ArrayList<Character>();
-	private ArrayList <eNFAState> adjacents = new ArrayList <eNFAState>();
+//Ɛ
+public class TOC {
 	
-	public eNFAState (String title, Type type) {
-		this.title=title;
-		this.type=type;
-		symbols.add('Ɛ');
-		adjacents.add(this);
-	}
-	
-	public void addTransition (char c, eNFAState nextState) {
-		symbols.add(c);
-		adjacents.add(nextState);
-	}
-	
-	public String getTitle() {
-		return this.title;
-	}
-	
-	public Type getType () {
-		return type;
-	}
-	
-	public HashSet <eNFAState> goesTo (char symbol){
-		HashSet <eNFAState> outputStates = new HashSet<eNFAState>();
-		for (int i=0; i<symbols.size();i++) {
-			if(symbols.get(i).equals(symbol)) {
-				outputStates.add(adjacents.get(i));
-			}
-		}
-		return outputStates;
-	}
-	
-	public String toString() {
-		String s = "";
-		for (char c : symbols) {
-			s+=c+" ";
-		}
-		String ad = "";
-		for (eNFAState st : this.adjacents) {
-			ad+=st.getTitle()+" ";
-		}
-		return title+" simbolet "+s+" gjendjet fqinje "+ad;
-	}
-	
-	public boolean equals(Object anObject) {
-		eNFAState aState = (eNFAState)anObject;
-		return false;
-	}
-	
-	public ArrayList <Character> getSymbols (){
-		return this.symbols;
-	}
-	
-	public ArrayList <eNFAState> getAdjacents(){
-		return this.adjacents;
-	}
-	
-	public HashSet <eNFAState> eClosure (){
-		HashSet <eNFAState> eClosure = new HashSet<eNFAState>();
-		Queue <eNFAState> queue = new LinkedList <eNFAState>();
-		queue.add(this);
-		eClosure.add(this);
-		
-		for (int itr=0; itr<queue.size();itr++) {
-			eNFAState q = queue.peek();
-			for (int i=0; i<q.getSymbols().size();i++) {
-				if (q.getSymbols().get(i).equals('Ɛ')) {
-					if (!eClosure.contains(q.getAdjacents().get(i))) {
-						queue.add(q.adjacents.get(i));
-						eClosure.add(q.getAdjacents().get(i));
+	public static HashSet <DFAState> convertToDFA (ArrayList<NFAState> NFA, ArrayList <Character> Alphabet){
+		HashSet <DFAState> DFASet = new HashSet<DFAState>();
+		//shtojme q0 e NFA tek Q0 i DFA
+		DFAState DFA = new DFAState ();
+		DFA.addTitle(NFA.get(0));
+		DFA.setType(Type.START);
+		Queue <DFAState> queue = new LinkedList<DFAState>();
+		queue.add(DFA);
+		DFASet.add(DFA);
+		//bredhin queue-in
+		for (int iterator = 0 ; iterator < queue.size(); iterator++) {
+			//per secilen nga germat e alphabetit shohim 
+			DFAState d = queue.peek();
+			for (int i=0 ; i<Alphabet.size();i++) {
+				//se ku mund te shkojme nga secila prej gjendjeve qe perben title-in 
+				DFAState newDFAState = new DFAState();
+				for (NFAState nf : d.getTitle()) {
+					for (NFAState wg : nf.goesTo(Alphabet.get(i))) {
+						newDFAState.addTitle(wg);
 					}
 				}
+				//System.out.println(newDFAState);
+				d.addTransition(Alphabet.get(i), newDFAState);
+			
+			//krahaso gjendjen e re newState nqs ndodhet ne DFA apo jo
+			boolean ndodhet = false;
+			for (DFAState dfs : DFASet) {
+				if (dfs.equals(newDFAState))
+					ndodhet=true;
 			}
-			queue.remove();
-			itr--;
+			if(!ndodhet) {
+				queue.add(newDFAState);
+				DFASet.add(newDFAState);			
+			}
+			
+			}
+			//per gjendjen d- koke e rradhes 
+			  queue.remove();
+			  iterator--;
 		}
-		return eClosure;
+		return DFASet;
+	}
+	
+	public static void main (String [] args) {
+		//new ConversionFrame();
+		ArrayList <Character> alpha = new ArrayList<Character>();
+		alpha.add('0');
+		alpha.add('1');
+		alpha.add('2');
+		/*
+		ArrayList <NFAState> NFA = new ArrayList<NFAState>();
+		NFAState q0 = new NFAState("q0", Type.START);
+		NFAState q1 = new NFAState ("q1",Type.NONE);
+		NFAState q2 = new NFAState ("q2",Type.NONE);
+		NFAState q3 = new NFAState ("q3",Type.FINAL);
+		
+		q0.addTransition('a', q0);
+		q0.addTransition('a', q1);
+		q0.addTransition('b',q0);
+		q1.addTransition('a', q2);
+		q1.addTransition('b', q2);
+		q2.addTransition('a', q3);
+		q2.addTransition('b', q3);
+		
+		NFA.add(q0); NFA.add(q1); NFA.add(q2);
+		HashSet <DFAState> DFA = convertToDFA(NFA,alpha);
+		System.out.println("Converted");
+		for (DFAState d : DFA) {
+			d.bridh();
+		}
+		*/
+		
+		eNFAState q0 = new eNFAState("q0", Type.START);
+		eNFAState q1 = new eNFAState("q1",Type.NONE);
+		eNFAState q2 = new eNFAState("q2",Type.FINAL);
+		
+		q0.addTransition('0',q0);
+		q0.addTransition('Ɛ',q1);
+		q1.addTransition('1',q1);
+		q1.addTransition('Ɛ',q2);
+		q2.addTransition('2',q2);
+		
+		for (eNFAState enfa : q2.eClosure()) {
+			System.out.println(enfa);
+		}
+		
 	}
 }
