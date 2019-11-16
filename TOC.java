@@ -67,10 +67,30 @@ public class TOC {
 				}
 			}
 			NFAState nfaState = new NFAState(enfa.getTitle(),t);
-			NFA.add(nfaState);
+			NFA.add(nfaState); //u shtuan te gjitha
 		}
-		//U ndertuan gjendjet finale te NFA-se tani te filloje algoritmi per konvertimin
+		//U ndertuan gjendjet (edhe ato finale) te NFA-se tani te filloje algoritmi per konvertimin
+		for (int i=0; i<NFA.size();i++) {
+			//eNFA.size == NFA.size
+			
+			for (int j=0; j<Alphabet.size();j++) {
+				HashSet <eNFAState>  eClosure1 = eNFA.get(i).eClosure();
+				HashSet <eNFAState> goesToSet = new HashSet <eNFAState>();
+				for (eNFAState enfac : eClosure1) {
+					for (eNFAState enfa : enfac.goesTo(Alphabet.get(i))) {
+						goesToSet.add(enfa);
+					}
+				}
+				HashSet <eNFAState> eClosure2 = new HashSet <eNFAState>();
+				for (eNFAState enfac : goesToSet) {
+					for (eNFAState enfa : enfac.eClosure()) {
+						eClosure2.add(enfa);
+					}
+				}
+				//u be bredhja
 		
+			}
+		}
 		
 		return NFA;
 	}
@@ -114,13 +134,14 @@ public class TOC {
 		q1.addTransition('1',q1);
 		q1.addTransition('Ɛ',q2);
 		q2.addTransition('2',q2);
-		
+	
 		ArrayList <eNFAState> eNFA = new ArrayList<eNFAState>();
-		eNFA.add(q0); eNFA.add(q1); eNFA.add(q2);
+		eNFA.add(q0); eNFA.add(q1); eNFA.add(q2); 
 		
 		for (NFAState enfa : convertToNFA(eNFA, alpha)) {
-			System.out.println(enfa+" gjendja- "+enfa.getType());
+			System.out.println(enfa+" gjendja-"+enfa.getType());
 		}
+		
 		
 	}
 }
