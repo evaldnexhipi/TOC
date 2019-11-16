@@ -115,8 +115,11 @@ public class TOC {
 		q1.addTransition('Ɛ',q2);
 		q2.addTransition('2',q2);
 		
-		for (eNFAState enfa : q2.eClosure()) {
-			System.out.println(enfa);
+		ArrayList <eNFAState> eNFA = new ArrayList<eNFAState>();
+		eNFA.add(q0); eNFA.add(q1); eNFA.add(q2);
+		
+		for (NFAState enfa : convertToNFA(eNFA, alpha)) {
+			System.out.println(enfa+" gjendja- "+enfa.getType());
 		}
 		
 	}
