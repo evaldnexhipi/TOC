@@ -66,12 +66,16 @@ public class DFAState {
 		s=s.substring(0, s.length()-1);
 		s+="}";
 		
+		if (s.indexOf("}")==0) {
+			s="{ERROR}";
+		}
+		
 		if(this.type==Type.FINAL) {
 			String str = "{";
 			str+=s;
 			str+="}";
 			return str;
-		}
+		}		
 		
 		return s;
 	}
