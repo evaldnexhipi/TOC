@@ -35,7 +35,7 @@ public class NFAState {
 		}
 		return outputStates;
 	}
-	
+	/*
 	public String toString() {
 		String s = "";
 		for (char c : symbols) {
@@ -47,9 +47,17 @@ public class NFAState {
 		}
 		return title+" simbolet "+s+" gjendjet fqinje "+ad;
 	}
+	*/
 	
 	public boolean equals(Object anObject) {
 		NFAState aState = (NFAState)anObject;
 		return false;
+	}
+	
+	public void bridh () {
+		String title = toString();
+		for (int i=1; i<symbols.size();i++) {
+			System.out.println(this.title+"-> "+symbols.get(i)+" -> "+adjacents.get(i).getTitle());
+		}
 	}
 }
