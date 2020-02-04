@@ -136,7 +136,7 @@ public class ConversionFrame extends JFrame {
 				
 				if(!exists1) {
 					eNFAState neweNFAState=new eNFAState(q1);
-					System.out.println("Added State: "+neweNFAState.getTitle());
+//					System.out.println("Added State: "+neweNFAState.getTitle());
 					eNFA.add(neweNFAState); 
 				}
 				
@@ -147,7 +147,7 @@ public class ConversionFrame extends JFrame {
 				
 				if(!exists2) {
 					eNFAState neweNFAState2=new eNFAState(q2);
-					System.out.println("Added State: "+neweNFAState2.getTitle());
+//					System.out.println("Added State: "+neweNFAState2.getTitle());
 					eNFA.add(neweNFAState2); 
 				}
 				
@@ -187,7 +187,7 @@ public class ConversionFrame extends JFrame {
 				
 				if(!exists1) {
 					NFAState newNFAState=new NFAState(q1);
-					System.out.println("Added State: "+newNFAState.getTitle());
+//					System.out.println("Added State: "+newNFAState.getTitle());
 					NFA.add(newNFAState); 
 				}
 				
@@ -198,7 +198,7 @@ public class ConversionFrame extends JFrame {
 				
 				if(!exists2) {
 					NFAState newNFAState2=new NFAState(q2);
-					System.out.println("Added State: "+newNFAState2.getTitle());
+//					System.out.println("Added State: "+newNFAState2.getTitle());
 					NFA.add(newNFAState2); 
 				}
 				
@@ -239,7 +239,7 @@ public class ConversionFrame extends JFrame {
 				if(!exists1) {
 					DFAState newDFAState=new DFAState(q1);
 					newDFAState.checkType();
-					System.out.println("Added State: "+newDFAState.getTitle2());
+//					System.out.println("Added State: "+newDFAState.getTitle2());
 					DFA.add(newDFAState); 
 				}
 				
@@ -251,7 +251,7 @@ public class ConversionFrame extends JFrame {
 				if(!exists2) {
 					DFAState newDFAState2=new DFAState(q2);
 					newDFAState2.checkType();
-					System.out.println("Added State: "+newDFAState2.getTitle2());
+//					System.out.println("Added State: "+newDFAState2.getTitle2());
 					DFA.add(newDFAState2); 
 				}
 				
@@ -340,7 +340,7 @@ public class ConversionFrame extends JFrame {
 						}
 					}
 				}
-				else if (convertTo=="DFAMin") {
+				else if (convertTo=="DFA-Minimal") {
 					HashSet <DFAState> dfaConv = TOC.convertToDFA(TOC.convertToNFA(eNFA,alphabet), alphabet);
 					ArrayList <DFAState> inDFA = new ArrayList<DFAState>();
 					for (DFAState d : dfaConv)
@@ -348,7 +348,7 @@ public class ConversionFrame extends JFrame {
 					
 					ArrayList <DFAMinimalState> dfaMinConv = TOC.minimizeDFA(inDFA, alphabet);
 					for (DFAMinimalState dms : dfaMinConv) {
-						for (int i=1; i<dms.getSymbols().size();i++) {
+						for (int i=0; i<dms.getSymbols().size();i++) {
 							Vector <String> newRow = new Vector <String>();
 							newRow.add(""+dms);
 							newRow.add(""+dms.getSymbol(i));
@@ -371,7 +371,7 @@ public class ConversionFrame extends JFrame {
 							}
 						}
 					}
-					else if (convertTo=="DFAMin") {
+					else if (convertTo=="DFA-Minimal") {
 						HashSet <DFAState> dfaConv = TOC.convertToDFA(NFA, alphabet);
 						ArrayList <DFAState> inDFA = new ArrayList<DFAState>();
 						for (DFAState d : dfaConv)
@@ -379,7 +379,7 @@ public class ConversionFrame extends JFrame {
 						
 						ArrayList <DFAMinimalState> dfaMinConv = TOC.minimizeDFA(inDFA, alphabet);
 						for (DFAMinimalState dms : dfaMinConv) {
-							for (int i=1; i<dms.getSymbols().size();i++) {
+							for (int i=0; i<dms.getSymbols().size();i++) {
 								Vector <String> newRow = new Vector <String>();
 								newRow.add(""+dms);
 								newRow.add(""+dms.getSymbol(i));
@@ -393,7 +393,7 @@ public class ConversionFrame extends JFrame {
 					}
 			}
 			else if (convertFrom=="DFA") {
-					if(convertTo=="DFAMin") {
+					if(convertTo=="DFA-Minimal") {
 						HashSet <DFAState> dfaConv = DFA;
 						ArrayList <DFAState> inDFA = new ArrayList<DFAState>();
 						for (DFAState d : dfaConv)
@@ -401,7 +401,7 @@ public class ConversionFrame extends JFrame {
 						
 						ArrayList <DFAMinimalState> dfaMinConv = TOC.minimizeDFA(inDFA, alphabet);
 						for (DFAMinimalState dms : dfaMinConv) {
-							for (int i=1; i<dms.getSymbols().size();i++) {
+							for (int i=0; i<dms.getSymbols().size();i++) {
 								Vector <String> newRow = new Vector <String>();
 								newRow.add(""+dms);
 								newRow.add(""+dms.getSymbol(i));
