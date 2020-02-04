@@ -356,11 +356,67 @@ public class ConversionFrame extends JFrame {
 							model.addRow(newRow);
 						}
 					}
-					
 				}
-				
 			}
-			
+			else if (convertFrom=="NFA") {
+					if (convertTo=="DFA") {
+						HashSet<DFAState> dfaConv = TOC.convertToDFA(NFA, alphabet);
+						for (DFAState dfas : dfaConv) {
+							for (int i=1; i<dfas.getSymbols().size();i++) {
+								Vector <String> newRow = new Vector <String> ();
+								newRow.add(dfas.toString());
+								newRow.add(""+dfas.getSymbol(i));
+								newRow.add(""+dfas.getAdjacent(i));
+								model.addRow(newRow);
+							}
+						}
+					}
+					else if (convertTo=="DFAMin") {
+						HashSet <DFAState> dfaConv = TOC.convertToDFA(NFA, alphabet);
+						ArrayList <DFAState> inDFA = new ArrayList<DFAState>();
+						for (DFAState d : dfaConv)
+							inDFA.add(d);
+						
+						ArrayList <DFAMinimalState> dfaMinConv = TOC.minimizeDFA(inDFA, alphabet);
+						for (DFAMinimalState dms : dfaMinConv) {
+							for (int i=1; i<dms.getSymbols().size();i++) {
+								Vector <String> newRow = new Vector <String>();
+								newRow.add(""+dms);
+								newRow.add(""+dms.getSymbol(i));
+								newRow.add(""+dms.getAdjacent(i));
+								model.addRow(newRow);
+							}
+						}
+					}
+					else {
+						JOptionPane.showMessageDialog(this, "Error on Selection");
+					}
+			}
+			else if (convertFrom=="DFA") {
+					if(convertTo=="DFAMin") {
+						HashSet <DFAState> dfaConv = DFA;
+						ArrayList <DFAState> inDFA = new ArrayList<DFAState>();
+						for (DFAState d : dfaConv)
+							inDFA.add(d);
+						
+						ArrayList <DFAMinimalState> dfaMinConv = TOC.minimizeDFA(inDFA, alphabet);
+						for (DFAMinimalState dms : dfaMinConv) {
+							for (int i=1; i<dms.getSymbols().size();i++) {
+								Vector <String> newRow = new Vector <String>();
+								newRow.add(""+dms);
+								newRow.add(""+dms.getSymbol(i));
+								newRow.add(""+dms.getAdjacent(i));
+								model.addRow(newRow);
+							}
+						}
+					}
+					else {
+						JOptionPane.showMessageDialog(this, "Error on Selection");
+					}
+			}
+			else {
+				JOptionPane.showMessageDialog(this, "Error on Selection");
+			}
 		});
 		
 		northPanel2.setLayout(new GridLayout(1,6));
