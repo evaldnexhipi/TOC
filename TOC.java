@@ -8,12 +8,12 @@ import jdk.internal.org.objectweb.asm.tree.IntInsnNode;
 //Ɛ
 public class TOC {
 	
-	public static HashSet <DFAState> convertToDFA (ArrayList<NFAState> NFA, ArrayList <Character> Alphabet){
-		HashSet <DFAState> DFASet = new HashSet<DFAState>();
+	public static ArrayList <DFAState> convertToDFA (ArrayList<NFAState> NFA, ArrayList <Character> Alphabet){
+		ArrayList <DFAState> DFASet = new ArrayList<DFAState>();
 		//shtojme q0 e NFA tek Q0 i DFA
 		DFAState DFA = new DFAState ();
 		DFA.addTitle(NFA.get(0));
-		DFA.setType(Tip.START);
+		//DFA.setType(Tip.START);
 		Queue <DFAState> queue = new LinkedList<DFAState>();
 		queue.add(DFA);
 		DFASet.add(DFA);
@@ -29,18 +29,25 @@ public class TOC {
 						newDFAState.addTitle(wg);
 					}
 				}
-				//System.out.println(newDFAState);
-				d.addTransition(Alphabet.get(i), newDFAState);
+				
+//				d.addTransition(Alphabet.get(i), newDFAState);
 			
 			//krahaso gjendjen e re newState nqs ndodhet ne DFA apo jo
 			boolean ndodhet = false;
+			DFAState existingState=null; //added
 			for (DFAState dfs : DFASet) {
-				if (dfs.equals(newDFAState))
+				if (dfs.equals(newDFAState)) {
 					ndodhet=true;
+					existingState=dfs;
+				}
 			}
 			if(!ndodhet) {
+				d.addTransition(Alphabet.get(i), newDFAState); //added
 				queue.add(newDFAState);
 				DFASet.add(newDFAState);			
+			}
+			else {
+				d.addTransition(Alphabet.get(i),existingState); //added
 			}
 			
 			}
@@ -110,18 +117,17 @@ public class TOC {
 		ArrayList <DFAMinimalState> minimalDFA = new ArrayList<DFAMinimalState>();
 		
 		int numberOfStates = DFA.size();
-		int [][] matrix = new int [numberOfStates][numberOfStates];
-		matrix = initializeMatrix(matrix,numberOfStates, DFA);
-		matrix = updateMatrix(matrix,numberOfStates,DFA, Alphabet);
-		
-		/* Afishimi i Matrices
-		for (int i=0; i<numberOfStates; i++) {
-			for (int j=0; j<numberOfStates;j++) {
-				System.out.print(matrix[i][j]+" ");
+		/*
+		for (DFAState dfs : DFA) {
+			for (int i=1; i<dfs.getSymbols().size(); i++) {
+				System.out.println(dfs+" -> "+dfs.getSymbol(i)+" -> "+dfs.whereGoesOn(Alphabet.get(i-1)));
 			}
 			System.out.print("\n");
 		}
 		*/
+		int [][] matrix = new int [numberOfStates][numberOfStates];
+		matrix = initializeMatrix(matrix,numberOfStates, DFA);
+		matrix = updateMatrix(matrix,numberOfStates,DFA, Alphabet);
 		
 		//ADD RESULTS FROM THE MATRIX
 		ArrayList <HashSet> results = new ArrayList <HashSet>();
@@ -231,46 +237,51 @@ public class TOC {
 	}
 	
 	public static int[][] updateMatrix (int [][]matrix,int size, ArrayList<DFAState>DFA, ArrayList <Character> Alphabet){
-		int q1,q2; int count=0;
+		int q1,q2;
 		boolean done = false;
 		boolean changed;
-		//while (!done) {
+		while (!done) {
 			changed=false;
 			
 			for (int i=0; i<size; i++) {
 				for (int j=0; j<i; j++) {
-					for (char c : Alphabet) {
-					//changed - derisa te mos kemi modifikime ne matrice
-						q1 = getIndexOfState(DFA,DFA.get(i).whereGoesOn(c));
-						q2 = getIndexOfState(DFA,DFA.get(j).whereGoesOn(c));
-						//System.out.println("(q1,q2): "+"("+q1+","+q2+")");
-					
-						if (matrix[q1][q2]==1 || matrix[q2][q1]==1) {
-							matrix[i][j]=1;
-							matrix[j][i]=1;
-							changed=true;
+					if(matrix[i][j] == 0 || matrix[j][i] == 0) {
+						for (char c : Alphabet) {
+							//changed - derisa te mos kemi modifikime ne matrice		
+							q1 = getIndexOfState(DFA,DFA.get(i).whereGoesOn(c));
+							q2 = getIndexOfState(DFA,DFA.get(j).whereGoesOn(c));
+//							System.out.println("(d1,d2): "+"("+d1+","+d2+")");
+//							System.out.println("(q1,q2): "+"("+q1+","+q2+")");
 							
-							break;
+							if (matrix[q1][q2]==1 || matrix[q2][q1]==1) {
+								matrix[i][j]=1;
+								matrix[j][i]=1;
+								changed=true;
+							
+								break;
+							}
 						}
-						
 					}
 				}
 			}
 			
 			if(!changed) 
 				done=true;
-		//}
+		}
 		return matrix;
 	}
 	
 	public static int getIndexOfState (ArrayList<DFAState>DFA, DFAState ds) {
 		for (int i=0; i<DFA.size();i++) {
-			if (DFA.get(i)==ds)
+			if(DFA.get(i)==ds){
+//				System.out.println(DFA.get(i));
 				return i;
+			}
 		}
 		return -1;
 	}
-
+	
+	
 	
 	public static void main (String [] args) {
 		
@@ -307,9 +318,9 @@ public class TOC {
 		alpha.add('2');
 		//alpha.add('2');
 
-		eNFAState q1 = new eNFAState("q1", Type.START);
-		eNFAState q2 = new eNFAState("q2",Type.NONE);
-		eNFAState q3 = new eNFAState("q3",Type.FINAL);
+		eNFAState q1 = new eNFAState("q0", Tip.START);
+		eNFAState q2 = new eNFAState("q1",Tip.NONE);
+		eNFAState q3 = new eNFAState("q2",Tip.FINAL);
 		
 		q1.addTransition('0',q1);
 		q1.addTransition('Ɛ',q2);
@@ -331,44 +342,47 @@ public class TOC {
 			}
 		}
 			
-		
+		*/
 		
 		/*
 		ArrayList <Character> alpha = new ArrayList<Character>();
 		alpha.add('0');
 		alpha.add('1');
+		alpha.add('2');
 		
 		DFAState A = new DFAState("A");
-		A.setType(Type.START);
+		A.setType(Tip.FINAL);
 		DFAState B = new DFAState("B");
+		B.setType(Tip.FINAL);
 		DFAState C = new DFAState("C");
-		C.setType(Type.FINAL);
+		C.setType(Tip.FINAL);
 		DFAState D = new DFAState("D");
-		D.setType(Type.FINAL);
+		D.setType(Tip.FINAL);
 		DFAState E = new DFAState("E");
-		E.setType(Type.FINAL);
-		DFAState F = new DFAState("F");
 		
 		A.addTransition('0',B);
-		A.addTransition('1',C);
+		A.addTransition('1',D);
+		A.addTransition('2',C);
 		
-		B.addTransition('0',A);
+		B.addTransition('0',B);
 		B.addTransition('1',D);
+		B.addTransition('2',C);
 		
 		C.addTransition('0',E);
-		C.addTransition('1',F);
+		C.addTransition('1',E);
+		C.addTransition('2',C);
 		
 		D.addTransition('0', E);
-		D.addTransition('1', F);
+		D.addTransition('1', D);
+		D.addTransition('2', C);
 		
 		E.addTransition('0', E);
-		E.addTransition('1', F);
-		
-		F.addTransition('0', F);
-		F.addTransition('1', F);
+		E.addTransition('1', E);
+		E.addTransition('2', E);
+	
 		
 		ArrayList <DFAState> dfaEx = new ArrayList<DFAState>();
-		dfaEx.add(A); dfaEx.add(B); dfaEx.add(C); dfaEx.add(D); dfaEx.add(E); dfaEx.add(F);
+		dfaEx.add(A); dfaEx.add(B); dfaEx.add(C); dfaEx.add(D); dfaEx.add(E); 
 		
 		
 		for (DFAState dfa :dfaEx) {
@@ -376,9 +390,10 @@ public class TOC {
 		}
 		System.out.println("");
 		//PRINT STATES
-				for (DFAMinimalState ds : minimizeDFA(dfaEx,alpha)) {
-					ds.bridh();
-				}
+		
+		for (DFAMinimalState ds : minimizeDFA(dfaEx,alpha)) {
+			ds.bridh();
+		}
 		*/
 	}
 }
