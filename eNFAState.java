@@ -4,15 +4,29 @@ import java.util.LinkedList;
 import java.util.Queue;
 public class eNFAState {
 	private String title;
-	private Type type;
+	private Tip type;
 	private ArrayList <Character> symbols = new ArrayList<Character>();
 	private ArrayList <eNFAState> adjacents = new ArrayList <eNFAState>();
 	
-	public eNFAState (String title, Type type) {
+	public eNFAState (String title, Tip tip) {
 		this.title=title;
-		this.type=type;
+		this.type=tip;
 		symbols.add('Ɛ');
 		adjacents.add(this);
+	}
+	
+	public eNFAState (String title) {
+		this.title=title;
+		this.type=Tip.NONE;
+		symbols.add('Ɛ');
+		adjacents.add(this);
+	}
+	
+	public void checkType() {
+		if(title.contains("{")) {
+			this.type=Tip.FINAL;
+//			title=title.substring(1,title.length()-1);
+		}
 	}
 	
 	public void addTransition (char c, eNFAState nextState) {
@@ -24,8 +38,12 @@ public class eNFAState {
 		return this.title;
 	}
 	
-	public Type getType () {
+	public Tip getType () {
 		return type;
+	}
+	
+	public void setType(Tip type) {
+		this.type=type;
 	}
 	
 	public HashSet <eNFAState> goesTo (char symbol){
