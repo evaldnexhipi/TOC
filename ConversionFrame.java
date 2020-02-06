@@ -50,7 +50,7 @@ public class ConversionFrame extends JFrame {
 	private int numberOfStates;
 	private ArrayList <eNFAState> eNFA;
 	private ArrayList <NFAState> NFA;
-	private HashSet<DFAState> DFA;
+	private ArrayList<DFAState> DFA;
 	private ArrayList <DFAMinimalState> DFAMin;
 	
 	private String convertFrom;
@@ -64,7 +64,7 @@ public class ConversionFrame extends JFrame {
 		
 		eNFA = new ArrayList<eNFAState>();
 		NFA = new ArrayList <NFAState>();
-		DFA = new HashSet <DFAState>();
+		DFA = new ArrayList <DFAState>();
 		DFAMin = new ArrayList<DFAMinimalState>();
 		
 		createNorthPanel();
@@ -127,41 +127,85 @@ public class ConversionFrame extends JFrame {
 				String q2 = outputStateField.getText();
 				newRow.add(q2);
 //				System.out.println("Q2: "+q2);
+				String q11 = q1.substring(1,q1.length()-1);
+				String q22 = q2.substring(1, q2.length()-1);
 				
 				boolean exists1=false; boolean exists2=false;
 				for (eNFAState ens : eNFA) {
-					if (ens.getTitle().compareTo(q1)==0)
-						exists1=true;
+					if (q1.contains("{")) {
+						if (ens.getTitle().compareTo(q11)==0)
+							exists1=true;
+					}
+					else {
+						if (ens.getTitle().compareTo(q1)==0)
+							exists1=true;
+					}
 				}
 				
 				if(!exists1) {
-					eNFAState neweNFAState=new eNFAState(q1);
+					eNFAState neweNFAState;
+					if(q1.contains("{")) {
+						neweNFAState = new eNFAState(q11);
+						neweNFAState.setType(Tip.FINAL);
+						
+					}else
+					neweNFAState=new eNFAState(q1);
+//					neweNFAState.checkType();
 //					System.out.println("Added State: "+neweNFAState.getTitle());
 					eNFA.add(neweNFAState); 
 				}
 				
 				for (eNFAState ens: eNFA) {
-					if(ens.getTitle().compareTo(q2)==0)
-						exists2=true;  
+					if(q2.contains("{")) {
+						if(ens.getTitle().compareTo(q22)==0)
+							exists2=true;  
+					}
+					else {
+						if(ens.getTitle().compareTo(q2)==0)
+							exists2=true;
+					}
 				}
 				
 				if(!exists2) {
-					eNFAState neweNFAState2=new eNFAState(q2);
+					eNFAState neweNFAState2;
+					if(q2.contains("{")) {
+						neweNFAState2=new eNFAState(q22);
+						neweNFAState2.setType(Tip.FINAL);	
+					}else
+					neweNFAState2=new eNFAState(q2);
+//					neweNFAState2.checkType();
 //					System.out.println("Added State: "+neweNFAState2.getTitle());
 					eNFA.add(neweNFAState2); 
 				}
 				
 				eNFAState state1 = null,state2 = null;
 				for (eNFAState ens : eNFA) {
-					if(ens.getTitle().compareTo(q1)==0) {
-						state1=ens;
-						break;
+					if (q1.contains("{")) {
+						if(ens.getTitle().compareTo(q11)==0) {
+							state1=ens;
+							break;
+						}
+					}
+					else {
+						if(ens.getTitle().compareTo(q1)==0) {
+							state1=ens;
+							break;
+						}
 					}
 				}
+				
 				for (eNFAState ens : eNFA) {
-					if(ens.getTitle().compareTo(q2)==0) {
-						state2=ens;
-						break;
+					if (q2.contains("{")) {
+						if(ens.getTitle().compareTo(q22)==0) {
+							state2=ens;
+							break;
+						}
+					}
+					else {
+						if(ens.getTitle().compareTo(q2)==0) {
+							state2=ens;
+							break;
+						}
 					}
 				}
 				state1.addTransition(symb, state2);
@@ -178,41 +222,82 @@ public class ConversionFrame extends JFrame {
 				String q2 = outputStateField.getText();
 //				System.out.println("Q2: "+q2);
 				newRow.add(q2);
-				
+				String q11 = q1.substring(1,q1.length()-1);
+				String q22 = q2.substring(1, q2.length()-1);
 				boolean exists1=false; boolean exists2=false;
 				for (NFAState ns : NFA) {
-					if (ns.getTitle().compareTo(q1)==0)
-						exists1=true;
+					if(q1.contains("{")) {
+						if (ns.getTitle().compareTo(q11)==0)
+							exists1=true;
+					}
+					else {
+						if (ns.getTitle().compareTo(q1)==0)
+							exists1=true;
+					}
 				}
 				
 				if(!exists1) {
-					NFAState newNFAState=new NFAState(q1);
+					NFAState newNFAState;
+					if(q1.contains("{")) {
+						newNFAState = new NFAState(q11);
+						newNFAState.setType(Tip.FINAL);
+					}else
+					newNFAState=new NFAState(q1);
+//					newNFAState.checkType();
 //					System.out.println("Added State: "+newNFAState.getTitle());
 					NFA.add(newNFAState); 
 				}
 				
 				for (NFAState ns: NFA) {
-					if(ns.getTitle().compareTo(q2)==0)
-						exists2=true;  
+					if(q2.contains("{")) {
+						if(ns.getTitle().compareTo(q22)==0)
+							exists2=true;  
+					}
+					else {
+						if(ns.getTitle().compareTo(q2)==0)
+							exists2=true; 
+					}
 				}
 				
 				if(!exists2) {
-					NFAState newNFAState2=new NFAState(q2);
+					NFAState newNFAState2;
+					if(q2.contains("{")) {
+						newNFAState2=new NFAState(q22);
+						newNFAState2.setType(Tip.FINAL);
+					}else
+					newNFAState2=new NFAState(q2);
+//					newNFAState2.checkType();
 //					System.out.println("Added State: "+newNFAState2.getTitle());
 					NFA.add(newNFAState2); 
 				}
 				
 				NFAState state1 = null,state2 = null;
 				for (NFAState ns : NFA) {
-					if(ns.getTitle().compareTo(q1)==0) {
-						state1=ns;
-						break;
+					if(q1.contains("{")) {
+						if(ns.getTitle().compareTo(q11)==0) {
+							state1=ns;
+							break;
+						}
+					}
+					else {
+						if(ns.getTitle().compareTo(q1)==0) {
+							state1=ns;
+							break;
+						}
 					}
 				}
 				for (NFAState ns : NFA) {
-					if(ns.getTitle().compareTo(q2)==0) {
-						state2=ns;
-						break;
+					if(q2.contains("{")) {
+						if(ns.getTitle().compareTo(q22)==0) {
+							state2=ns;
+							break;
+						}
+					}
+					else {
+						if(ns.getTitle().compareTo(q2)==0) {
+							state2=ns;
+							break;
+						}
 					}
 				}
 				state1.addTransition(symb, state2);
@@ -229,43 +314,82 @@ public class ConversionFrame extends JFrame {
 				String q2 = outputStateField.getText();
 				newRow.add(q2);
 //				System.out.println("Q2: "+q2);
-				
+				String q11 = q1.substring(1,q1.length()-1);
+				String q22 = q2.substring(1, q2.length()-1);
 				boolean exists1=false; boolean exists2=false;
 				for (DFAState ds : DFA) {
-					if (ds.getTitle2().compareTo(q1)==0)
-						exists1=true;
+					if (q1.contains("{")) { 
+						if (ds.getTitle2().compareTo(q11)==0)
+							exists1=true;
+					}
+					else {
+						if (ds.getTitle2().compareTo(q1)==0)
+							exists1=true;
+					}
 				}
 				
 				if(!exists1) {
-					DFAState newDFAState=new DFAState(q1);
-					newDFAState.checkType();
+					DFAState newDFAState;
+					if(q1.contains("{")) {
+						newDFAState=new DFAState(q11);
+						newDFAState.setType(Tip.FINAL);
+					}else
+					newDFAState=new DFAState(q1);
+//					newDFAState.checkType();
 //					System.out.println("Added State: "+newDFAState.getTitle2());
 					DFA.add(newDFAState); 
 				}
 				
 				for (DFAState ds: DFA) {
-					if(ds.getTitle2().compareTo(q2)==0)
-						exists2=true;  
+					if(q2.contains("{")) {
+						if(ds.getTitle2().compareTo(q22)==0)
+							exists2=true;  
+					}
+					else {
+						if(ds.getTitle2().compareTo(q2)==0)
+							exists2=true; 
+					}
 				}
 				
 				if(!exists2) {
-					DFAState newDFAState2=new DFAState(q2);
-					newDFAState2.checkType();
+					DFAState newDFAState2;
+					if(q2.contains("{")) {
+						newDFAState2=new DFAState(q22);
+						newDFAState2.setType(Tip.FINAL);
+					}else
+					newDFAState2=new DFAState(q2);
+//					newDFAState2.checkType();
 //					System.out.println("Added State: "+newDFAState2.getTitle2());
 					DFA.add(newDFAState2); 
 				}
 				
 				DFAState state1 = null,state2 = null;
 				for (DFAState ds : DFA) {
-					if(ds.getTitle2().compareTo(q1)==0) {
-						state1=ds;
-						break;
+					if(q1.contains("{")) {
+						if(ds.getTitle2().compareTo(q11)==0) {
+							state1=ds;
+							break;
+						}
+					}
+					else {
+						if(ds.getTitle2().compareTo(q1)==0) {
+							state1=ds;
+							break;
+						}
 					}
 				}
 				for (DFAState ds : DFA) {
-					if(ds.getTitle2().compareTo(q2)==0) {
-						state2=ds;
-						break;
+					if(q2.contains("{")) {
+						if(ds.getTitle2().compareTo(q22)==0) {
+							state2=ds;
+							break;
+						}
+					}
+					else {
+						if(ds.getTitle2().compareTo(q2)==0) {
+							state2=ds;
+							break;
+						}
 					}
 				}
 				state1.addTransition(symb, state2);
@@ -329,11 +453,11 @@ public class ConversionFrame extends JFrame {
 					}
 				}
 				else if (convertTo=="DFA") {
-					HashSet<DFAState> dfaConv = TOC.convertToDFA(TOC.convertToNFA(eNFA,alphabet), alphabet);
+					ArrayList<DFAState> dfaConv = TOC.convertToDFA(TOC.convertToNFA(eNFA,alphabet), alphabet);
 					for (DFAState dfas : dfaConv) {
 						for (int i=1; i<dfas.getSymbols().size();i++) {
 							Vector <String> newRow = new Vector <String> ();
-							newRow.add(dfas.toString());
+							newRow.add(""+dfas);
 							newRow.add(""+dfas.getSymbol(i));
 							newRow.add(""+dfas.getAdjacent(i));
 							model.addRow(newRow);
@@ -341,7 +465,7 @@ public class ConversionFrame extends JFrame {
 					}
 				}
 				else if (convertTo=="DFA-Minimal") {
-					HashSet <DFAState> dfaConv = TOC.convertToDFA(TOC.convertToNFA(eNFA,alphabet), alphabet);
+					ArrayList <DFAState> dfaConv = TOC.convertToDFA(TOC.convertToNFA(eNFA,alphabet), alphabet);
 					ArrayList <DFAState> inDFA = new ArrayList<DFAState>();
 					for (DFAState d : dfaConv)
 						inDFA.add(d);
@@ -360,7 +484,7 @@ public class ConversionFrame extends JFrame {
 			}
 			else if (convertFrom=="NFA") {
 					if (convertTo=="DFA") {
-						HashSet<DFAState> dfaConv = TOC.convertToDFA(NFA, alphabet);
+						ArrayList<DFAState> dfaConv = TOC.convertToDFA(NFA, alphabet);
 						for (DFAState dfas : dfaConv) {
 							for (int i=1; i<dfas.getSymbols().size();i++) {
 								Vector <String> newRow = new Vector <String> ();
@@ -372,7 +496,7 @@ public class ConversionFrame extends JFrame {
 						}
 					}
 					else if (convertTo=="DFA-Minimal") {
-						HashSet <DFAState> dfaConv = TOC.convertToDFA(NFA, alphabet);
+						ArrayList <DFAState> dfaConv = TOC.convertToDFA(NFA, alphabet);
 						ArrayList <DFAState> inDFA = new ArrayList<DFAState>();
 						for (DFAState d : dfaConv)
 							inDFA.add(d);
@@ -394,7 +518,7 @@ public class ConversionFrame extends JFrame {
 			}
 			else if (convertFrom=="DFA") {
 					if(convertTo=="DFA-Minimal") {
-						HashSet <DFAState> dfaConv = DFA;
+						ArrayList <DFAState> dfaConv = DFA;
 						ArrayList <DFAState> inDFA = new ArrayList<DFAState>();
 						for (DFAState d : dfaConv)
 							inDFA.add(d);
