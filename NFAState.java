@@ -2,15 +2,45 @@ import java.util.ArrayList;
 import java.util.HashSet;
 public class NFAState {
 	private String title;
-	private Type type;
+	private Tip type;
 	private ArrayList <Character> symbols = new ArrayList<Character>();
 	private ArrayList <NFAState> adjacents = new ArrayList <NFAState>();
 	
-	public NFAState (String title, Type type) {
+	public NFAState (String title, Tip type) {
 		this.title=title;
 		this.type=type;
 		symbols.add('Ɛ');
 		adjacents.add(this);
+	}
+	
+	public NFAState(String title) {
+		this.title=title;
+		this.type=Tip.NONE;
+		symbols.add('Ɛ');
+		adjacents.add(this);
+	}
+	
+	public void checkType() {
+		if(title.contains("{")) {
+			this.type=Tip.FINAL;
+//			title=title.substring(1,title.length()-1);
+		}
+	}
+	
+	public ArrayList<Character> getSymbols (){
+		return symbols;
+	}
+	
+	public ArrayList<NFAState> getAdjacents(){
+		return adjacents;
+	}
+	
+	public char getSymbol(int i){
+		return symbols.get(i);
+	}
+	
+	public NFAState getAdjacents(int i){
+		return adjacents.get(i);
 	}
 	
 	public void addTransition (char c, NFAState nextState) {
@@ -22,7 +52,7 @@ public class NFAState {
 		return this.title;
 	}
 	
-	public Type getType () {
+	public Tip getType () {
 		return type;
 	}
 	
@@ -38,12 +68,17 @@ public class NFAState {
 	
 	public String toString() {
 		String s = this.title;
-		if (this.type==Type.FINAL) {
+		//&& !this.title.contains("{")
+		if (this.type==Tip.FINAL) {
 			s = "{"+s+"}";
 		}
 		return s;
 	}
 	
+	
+	public void setType(Tip tip) {
+		type=tip;
+	}
 	
 	public boolean equals(Object anObject) {
 		NFAState aState = (NFAState)anObject;
