@@ -250,9 +250,7 @@ public class TOC {
 							//changed - derisa te mos kemi modifikime ne matrice		
 							q1 = getIndexOfState(DFA,DFA.get(i).whereGoesOn(c));
 							q2 = getIndexOfState(DFA,DFA.get(j).whereGoesOn(c));
-//							System.out.println("(d1,d2): "+"("+d1+","+d2+")");
-//							System.out.println("(q1,q2): "+"("+q1+","+q2+")");
-							
+
 							if (matrix[q1][q2]==1 || matrix[q2][q1]==1) {
 								matrix[i][j]=1;
 								matrix[j][i]=1;
