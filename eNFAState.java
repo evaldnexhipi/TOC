@@ -23,7 +23,7 @@ public class eNFAState {
 	}
 	
 	public void checkType() {
-		if(title.contains("{")) {
+		if(title.contains("[")) {
 			this.type=Tip.FINAL;
 //			title=title.substring(1,title.length()-1);
 		}
