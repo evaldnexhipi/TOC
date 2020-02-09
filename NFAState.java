@@ -70,7 +70,7 @@ public class NFAState {
 		String s = this.title;
 		//&& !this.title.contains("{")
 		if (this.type==Tip.FINAL) {
-			s = "{"+s+"}";
+			s = "["+s+"]";
 		}
 		return s;
 	}
