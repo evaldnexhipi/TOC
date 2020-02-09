@@ -57,14 +57,18 @@ public class DFAMinimalState {
 	}
 	
 	public String toString() {
+		
 		String s = "";
 		for (DFAState dfas : title) {
 			//s+=dfas.getTitle2()+",";
-			s+=dfas+",";
+			if(dfas.toString().contains("["))
+				s+=dfas.toString().substring(1,dfas.toString().length()-1)+",";
+			else
+				s+=dfas+",";
 		}
 		s=s.substring(0,s.length()-1);
 		if(this.type==Tip.FINAL)
-			s="{"+s+"}";
+			s="["+s+"]";
 		return s;
 	}
 }
