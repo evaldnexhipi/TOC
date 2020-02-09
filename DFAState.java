@@ -44,7 +44,7 @@ public class DFAState {
 	}
 	
 	public void checkType() {
-		if(title2.contains("{")) {
+		if(title2.contains("[")) {
 			this.type=Tip.FINAL;
 //			title2=title2.substring(1,title2.length()-1);
 		}
@@ -125,8 +125,7 @@ public class DFAState {
 			}		
 		return s;
 		}
-		else 
-		{
+		else {
 			String s = "";
 			if(this.type==Tip.FINAL) {
 				s+="["+this.title2+"]";
@@ -137,4 +136,6 @@ public class DFAState {
 			return s;
 		}
 	}
+	
+	
 }
