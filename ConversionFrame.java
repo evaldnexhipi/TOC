@@ -132,7 +132,7 @@ public class ConversionFrame extends JFrame {
 				
 				boolean exists1=false; boolean exists2=false;
 				for (eNFAState ens : eNFA) {
-					if (q1.contains("{")) {
+					if (q1.contains("[")) {
 						if (ens.getTitle().compareTo(q11)==0)
 							exists1=true;
 					}
@@ -144,7 +144,7 @@ public class ConversionFrame extends JFrame {
 				
 				if(!exists1) {
 					eNFAState neweNFAState;
-					if(q1.contains("{")) {
+					if(q1.contains("[")) {
 						neweNFAState = new eNFAState(q11);
 						neweNFAState.setType(Tip.FINAL);
 						
@@ -156,7 +156,7 @@ public class ConversionFrame extends JFrame {
 				}
 				
 				for (eNFAState ens: eNFA) {
-					if(q2.contains("{")) {
+					if(q2.contains("[")) {
 						if(ens.getTitle().compareTo(q22)==0)
 							exists2=true;  
 					}
@@ -168,7 +168,7 @@ public class ConversionFrame extends JFrame {
 				
 				if(!exists2) {
 					eNFAState neweNFAState2;
-					if(q2.contains("{")) {
+					if(q2.contains("[")) {
 						neweNFAState2=new eNFAState(q22);
 						neweNFAState2.setType(Tip.FINAL);	
 					}else
@@ -180,7 +180,7 @@ public class ConversionFrame extends JFrame {
 				
 				eNFAState state1 = null,state2 = null;
 				for (eNFAState ens : eNFA) {
-					if (q1.contains("{")) {
+					if (q1.contains("[")) {
 						if(ens.getTitle().compareTo(q11)==0) {
 							state1=ens;
 							break;
@@ -195,7 +195,7 @@ public class ConversionFrame extends JFrame {
 				}
 				
 				for (eNFAState ens : eNFA) {
-					if (q2.contains("{")) {
+					if (q2.contains("[")) {
 						if(ens.getTitle().compareTo(q22)==0) {
 							state2=ens;
 							break;
@@ -226,7 +226,7 @@ public class ConversionFrame extends JFrame {
 				String q22 = q2.substring(1, q2.length()-1);
 				boolean exists1=false; boolean exists2=false;
 				for (NFAState ns : NFA) {
-					if(q1.contains("{")) {
+					if(q1.contains("[")) {
 						if (ns.getTitle().compareTo(q11)==0)
 							exists1=true;
 					}
@@ -238,7 +238,7 @@ public class ConversionFrame extends JFrame {
 				
 				if(!exists1) {
 					NFAState newNFAState;
-					if(q1.contains("{")) {
+					if(q1.contains("[")) {
 						newNFAState = new NFAState(q11);
 						newNFAState.setType(Tip.FINAL);
 					}else
@@ -249,7 +249,7 @@ public class ConversionFrame extends JFrame {
 				}
 				
 				for (NFAState ns: NFA) {
-					if(q2.contains("{")) {
+					if(q2.contains("[")) {
 						if(ns.getTitle().compareTo(q22)==0)
 							exists2=true;  
 					}
@@ -261,7 +261,7 @@ public class ConversionFrame extends JFrame {
 				
 				if(!exists2) {
 					NFAState newNFAState2;
-					if(q2.contains("{")) {
+					if(q2.contains("[")) {
 						newNFAState2=new NFAState(q22);
 						newNFAState2.setType(Tip.FINAL);
 					}else
@@ -273,7 +273,7 @@ public class ConversionFrame extends JFrame {
 				
 				NFAState state1 = null,state2 = null;
 				for (NFAState ns : NFA) {
-					if(q1.contains("{")) {
+					if(q1.contains("[")) {
 						if(ns.getTitle().compareTo(q11)==0) {
 							state1=ns;
 							break;
@@ -287,7 +287,7 @@ public class ConversionFrame extends JFrame {
 					}
 				}
 				for (NFAState ns : NFA) {
-					if(q2.contains("{")) {
+					if(q2.contains("[")) {
 						if(ns.getTitle().compareTo(q22)==0) {
 							state2=ns;
 							break;
@@ -318,7 +318,7 @@ public class ConversionFrame extends JFrame {
 				String q22 = q2.substring(1, q2.length()-1);
 				boolean exists1=false; boolean exists2=false;
 				for (DFAState ds : DFA) {
-					if (q1.contains("{")) { 
+					if (q1.contains("[")) { 
 						if (ds.getTitle2().compareTo(q11)==0)
 							exists1=true;
 					}
@@ -330,7 +330,7 @@ public class ConversionFrame extends JFrame {
 				
 				if(!exists1) {
 					DFAState newDFAState;
-					if(q1.contains("{")) {
+					if(q1.contains("[")) {
 						newDFAState=new DFAState(q11);
 						newDFAState.setType(Tip.FINAL);
 					}else
@@ -341,7 +341,7 @@ public class ConversionFrame extends JFrame {
 				}
 				
 				for (DFAState ds: DFA) {
-					if(q2.contains("{")) {
+					if(q2.contains("[")) {
 						if(ds.getTitle2().compareTo(q22)==0)
 							exists2=true;  
 					}
@@ -353,7 +353,7 @@ public class ConversionFrame extends JFrame {
 				
 				if(!exists2) {
 					DFAState newDFAState2;
-					if(q2.contains("{")) {
+					if(q2.contains("[")) {
 						newDFAState2=new DFAState(q22);
 						newDFAState2.setType(Tip.FINAL);
 					}else
@@ -365,7 +365,7 @@ public class ConversionFrame extends JFrame {
 				
 				DFAState state1 = null,state2 = null;
 				for (DFAState ds : DFA) {
-					if(q1.contains("{")) {
+					if(q1.contains("[")) {
 						if(ds.getTitle2().compareTo(q11)==0) {
 							state1=ds;
 							break;
@@ -379,7 +379,7 @@ public class ConversionFrame extends JFrame {
 					}
 				}
 				for (DFAState ds : DFA) {
-					if(q2.contains("{")) {
+					if(q2.contains("[")) {
 						if(ds.getTitle2().compareTo(q22)==0) {
 							state2=ds;
 							break;
