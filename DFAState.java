@@ -116,30 +116,25 @@ public class DFAState {
 			}
 			s=s.substring(0, s.length()-1);
 			s+="}";
-		
-			/*
-			if (s.indexOf("}")==0) {
-				//s="{∅}";
-			}
-			*/
 			
 			if(this.type==Tip.FINAL) {
-				String str = "{";
+				String str = "[";
 				str+=s;
-				str+="}";
+				str+="]";
 				return str;
 			}		
 		return s;
 		}
-		else {
+		else 
+		{
 			String s = "";
 			if(this.type==Tip.FINAL) {
-				s+="{"+this.title2+"}";
+				s+="["+this.title2+"]";
 			}
 			else {
 				s+=this.title2;
 			}
 			return s;
 		}
-	}	
+	}
 }
