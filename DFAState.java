@@ -46,7 +46,6 @@ public class DFAState {
 	public void checkType() {
 		if(title2.contains("[")) {
 			this.type=Tip.FINAL;
-//			title2=title2.substring(1,title2.length()-1);
 		}
 	}
 	
@@ -75,7 +74,6 @@ public class DFAState {
 		adjacents.add(nextState);
 	}
 	
-	
 	public boolean equals (Object anObject) {
 		DFAState aState = (DFAState)anObject;
 		if (aState.getTitle().size()!=this.title.size())
@@ -90,26 +88,18 @@ public class DFAState {
 			return (count==this.title.size());
 		}
 	}
-	
-	public void bridh () {
-		String title = toString();
-		for (int i=1; i<symbols.size();i++) {
-			System.out.println(title+"-> "+symbols.get(i)+" -> "+adjacents.get(i));
-		}
-	}
-	
+
 	public DFAState whereGoesOn (char c) {
 		for (int i=0; i<this.symbols.size(); i++) {
 			if(this.symbols.get(i)==c)
 				return adjacents.get(i);
 		}
-		
 		return null;
 	}
 	
 	public String toString () {
+		//FROM NFA
 		if (this.title.size()!=0) {	
-			//String s = "";
 			String s = "{";
 			for (NFAState nfas : this.title) {
 				s+=nfas.getTitle()+",";
@@ -125,6 +115,7 @@ public class DFAState {
 			}		
 		return s;
 		}
+		//FROM DFA
 		else {
 			String s = "";
 			if(this.type==Tip.FINAL) {
@@ -133,9 +124,7 @@ public class DFAState {
 			else {
 				s+=this.title2;
 			}
-			return s;
+		return s;
 		}
 	}
-	
-	
 }
