@@ -22,13 +22,6 @@ public class eNFAState {
 		adjacents.add(this);
 	}
 	
-	public void checkType() {
-		if(title.contains("[")) {
-			this.type=Tip.FINAL;
-//			title=title.substring(1,title.length()-1);
-		}
-	}
-	
 	public void addTransition (char c, eNFAState nextState) {
 		symbols.add(c);
 		adjacents.add(nextState);
@@ -54,18 +47,6 @@ public class eNFAState {
 			}
 		}
 		return outputStates;
-	}
-	
-	public String toString() {
-		String s = "";
-		for (char c : symbols) {
-			s+=c+" ";
-		}
-		String ad = "";
-		for (eNFAState st : this.adjacents) {
-			ad+=st.getTitle()+" ";
-		}
-		return title+" simbolet "+s+" gjendjet fqinje "+ad;
 	}
 	
 	public boolean equals(Object anObject) {
