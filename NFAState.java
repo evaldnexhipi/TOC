@@ -23,7 +23,6 @@ public class NFAState {
 	public void checkType() {
 		if(title.contains("[")) {
 			this.type=Tip.FINAL;
-//			title=title.substring(1,title.length()-1);
 		}
 	}
 	
@@ -68,27 +67,13 @@ public class NFAState {
 	
 	public String toString() {
 		String s = this.title;
-		//&& !this.title.contains("{")
 		if (this.type==Tip.FINAL) {
 			s = "["+s+"]";
 		}
 		return s;
 	}
 	
-	
 	public void setType(Tip tip) {
 		type=tip;
-	}
-	
-	public boolean equals(Object anObject) {
-		NFAState aState = (NFAState)anObject;
-		return false;
-	}
-	
-	public void bridh () {
-		String title = toString();
-		for (int i=1; i<symbols.size();i++) {
-			System.out.println(title+"-> "+symbols.get(i)+" -> "+adjacents.get(i));
-		}
 	}
 }
