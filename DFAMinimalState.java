@@ -5,6 +5,7 @@ public class DFAMinimalState {
 	private Tip type;
 	private ArrayList <Character> symbols;
 	private ArrayList <DFAMinimalState> adjacents;
+	
 	public DFAMinimalState() {
 		title=new ArrayList<DFAState>();
 		symbols=new ArrayList<Character>();
@@ -49,26 +50,19 @@ public class DFAMinimalState {
 		adjacents.add(nextState);
 	}
 	
-	public void bridh () {
-		String name = toString();
-		for (int i=0; i<symbols.size();i++) {
-			System.out.println(name+"-> "+symbols.get(i)+" -> "+adjacents.get(i));
-		}
-	}
-	
 	public String toString() {
-		
 		String s = "";
 		for (DFAState dfas : title) {
-			//s+=dfas.getTitle2()+",";
 			if(dfas.toString().contains("["))
 				s+=dfas.toString().substring(1,dfas.toString().length()-1)+",";
 			else
 				s+=dfas+",";
 		}
 		s=s.substring(0,s.length()-1);
+		
 		if(this.type==Tip.FINAL)
 			s="["+s+"]";
+		
 		return s;
 	}
 }
