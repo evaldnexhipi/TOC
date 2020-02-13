@@ -1,9 +1,6 @@
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Vector;
 
 import javax.swing.JFrame;
@@ -45,7 +42,6 @@ public class ConversionFrame extends JFrame {
 	private JTable inputAutomataTable;
 	private JTable outputAutomataTable;
 	
-	
 	private ArrayList<Character> alphabet;
 	private int numberOfStates;
 	private ArrayList <eNFAState> eNFA;
@@ -60,7 +56,6 @@ public class ConversionFrame extends JFrame {
 		setSize(1200,700);
 		setTitle("TOC Conversion");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//getContentPane().setBackground(Color.BLACK);
 		
 		eNFA = new ArrayList<eNFAState>();
 		NFA = new ArrayList <NFAState>();
@@ -121,12 +116,11 @@ public class ConversionFrame extends JFrame {
 				Vector <String> newRow = new Vector<String>();
 				String q1 = inputStateField.getText();
 				newRow.add(q1);
-//				System.out.println("Q1: "+q1);
 				char symb = symbolField.getText().charAt(0);
 				newRow.add(""+symb);
 				String q2 = outputStateField.getText();
 				newRow.add(q2);
-//				System.out.println("Q2: "+q2);
+
 				String q11 = q1.substring(1,q1.length()-1);
 				String q22 = q2.substring(1, q2.length()-1);
 				
@@ -150,8 +144,6 @@ public class ConversionFrame extends JFrame {
 						
 					}else
 					neweNFAState=new eNFAState(q1);
-//					neweNFAState.checkType();
-//					System.out.println("Added State: "+neweNFAState.getTitle());
 					eNFA.add(neweNFAState); 
 				}
 				
@@ -173,8 +165,6 @@ public class ConversionFrame extends JFrame {
 						neweNFAState2.setType(Tip.FINAL);	
 					}else
 					neweNFAState2=new eNFAState(q2);
-//					neweNFAState2.checkType();
-//					System.out.println("Added State: "+neweNFAState2.getTitle());
 					eNFA.add(neweNFAState2); 
 				}
 				
@@ -216,14 +206,14 @@ public class ConversionFrame extends JFrame {
 				Vector <String> newRow = new Vector <String>();
 				String q1 = inputStateField.getText();
 				newRow.add(q1);
-//				System.out.println("Q1: "+q1);
 				char symb = symbolField.getText().charAt(0);
 				newRow.add(""+symb);
 				String q2 = outputStateField.getText();
-//				System.out.println("Q2: "+q2);
 				newRow.add(q2);
+				
 				String q11 = q1.substring(1,q1.length()-1);
 				String q22 = q2.substring(1, q2.length()-1);
+				
 				boolean exists1=false; boolean exists2=false;
 				for (NFAState ns : NFA) {
 					if(q1.contains("[")) {
@@ -243,8 +233,6 @@ public class ConversionFrame extends JFrame {
 						newNFAState.setType(Tip.FINAL);
 					}else
 					newNFAState=new NFAState(q1);
-//					newNFAState.checkType();
-//					System.out.println("Added State: "+newNFAState.getTitle());
 					NFA.add(newNFAState); 
 				}
 				
@@ -266,8 +254,6 @@ public class ConversionFrame extends JFrame {
 						newNFAState2.setType(Tip.FINAL);
 					}else
 					newNFAState2=new NFAState(q2);
-//					newNFAState2.checkType();
-//					System.out.println("Added State: "+newNFAState2.getTitle());
 					NFA.add(newNFAState2); 
 				}
 				
@@ -307,13 +293,12 @@ public class ConversionFrame extends JFrame {
 			else if (convertFrom=="DFA") {
 				Vector <String> newRow = new Vector<String>();
 				String q1 = inputStateField.getText();
-//				System.out.println("Q1: "+q1);
 				newRow.add(q1);
 				char symb = symbolField.getText().charAt(0);
 				newRow.add(""+symb);
 				String q2 = outputStateField.getText();
 				newRow.add(q2);
-//				System.out.println("Q2: "+q2);
+				
 				String q11 = q1.substring(1,q1.length()-1);
 				String q22 = q2.substring(1, q2.length()-1);
 				boolean exists1=false; boolean exists2=false;
@@ -335,8 +320,6 @@ public class ConversionFrame extends JFrame {
 						newDFAState.setType(Tip.FINAL);
 					}else
 					newDFAState=new DFAState(q1);
-//					newDFAState.checkType();
-//					System.out.println("Added State: "+newDFAState.getTitle2());
 					DFA.add(newDFAState); 
 				}
 				
@@ -358,8 +341,6 @@ public class ConversionFrame extends JFrame {
 						newDFAState2.setType(Tip.FINAL);
 					}else
 					newDFAState2=new DFAState(q2);
-//					newDFAState2.checkType();
-//					System.out.println("Added State: "+newDFAState2.getTitle2());
 					DFA.add(newDFAState2); 
 				}
 				
@@ -451,6 +432,11 @@ public class ConversionFrame extends JFrame {
 							model.addRow(newRow);
 						}
 					}
+					Vector <String> newRow = new Vector<String>();
+					newRow.add("");
+					newRow.add("Converted to NFA");
+					newRow.add("");
+					model.addRow(newRow);
 				}
 				else if (convertTo=="DFA") {
 					ArrayList<DFAState> dfaConv = TOC.convertToDFA(TOC.convertToNFA(eNFA,alphabet), alphabet);
@@ -463,6 +449,11 @@ public class ConversionFrame extends JFrame {
 							model.addRow(newRow);
 						}
 					}
+					Vector <String> newRow = new Vector<String>();
+					newRow.add("");
+					newRow.add("Converted to DFA");
+					newRow.add("");
+					model.addRow(newRow);
 				}
 				else if (convertTo=="DFA-Minimal") {
 					ArrayList <DFAState> dfaConv = TOC.convertToDFA(TOC.convertToNFA(eNFA,alphabet), alphabet);
@@ -480,6 +471,11 @@ public class ConversionFrame extends JFrame {
 							model.addRow(newRow);
 						}
 					}
+					Vector <String> newRow = new Vector<String>();
+					newRow.add("");
+					newRow.add("Converted to Minimal DFA");
+					newRow.add("");
+					model.addRow(newRow);
 				}
 			}
 			else if (convertFrom=="NFA") {
@@ -494,6 +490,11 @@ public class ConversionFrame extends JFrame {
 								model.addRow(newRow);
 							}
 						}
+						Vector <String> newRow = new Vector<String>();
+						newRow.add("");
+						newRow.add("Converted to DFA");
+						newRow.add("");
+						model.addRow(newRow);
 					}
 					else if (convertTo=="DFA-Minimal") {
 						ArrayList <DFAState> dfaConv = TOC.convertToDFA(NFA, alphabet);
@@ -511,6 +512,11 @@ public class ConversionFrame extends JFrame {
 								model.addRow(newRow);
 							}
 						}
+						Vector <String> newRow = new Vector<String>();
+						newRow.add("");
+						newRow.add("Converted to Minimal DFA");
+						newRow.add("");
+						model.addRow(newRow);
 					}
 					else {
 						JOptionPane.showMessageDialog(this, "Error on Selection");
@@ -533,6 +539,11 @@ public class ConversionFrame extends JFrame {
 								model.addRow(newRow);
 							}
 						}
+						Vector <String> newRow = new Vector<String>();
+						newRow.add("");
+						newRow.add("Converted to Minimal DFA");
+						newRow.add("");
+						model.addRow(newRow);
 					}
 					else {
 						JOptionPane.showMessageDialog(this, "Error on Selection");
